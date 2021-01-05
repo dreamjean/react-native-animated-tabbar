@@ -4,7 +4,7 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { useTiming } from "react-native-redash";
+import { mix, useTiming } from "react-native-redash";
 
 import { calender } from "../config";
 
@@ -18,17 +18,8 @@ const Weave = ({ activeIndex, index, activeTintColor }) => {
 
   const stylez = useAnimatedStyle(() => {
     const isActive = index === activeIndex.value;
-
-    const scale = interpolate(
-      activeTransition.value,
-      [0, 0.25, 0.5, 0.75, 1],
-      [0, 0.5, 0.75, 0.9, 1]
-    );
-    const borderWidth = interpolate(
-      activeTransition.value,
-      [0, 0.25, 0.5, 0.75, 1],
-      [0.5, 2, 4, 2, 0.5]
-    );
+    const scale = mix(activeTransition.value, 0.4, 1.2);
+    const borderWidth = mix(activeTransition.value, 5, 1);
 
     const opacity = interpolate(activeTransition.value, [0, 0.5, 1], [0, 1, 0]);
     return {
