@@ -1,17 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import Animated, {
-  // interpolateColor,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 
-// import { useSpring } from "react-native-redash";
 import { calender, colors } from "../config";
-// import ActiveIcon from "./ActiveIcon";
-import Particule from "./Particule";
+import ActiveIcon from "./ActiveIcon";
 import TabItem from "./TabItem";
 
 const { width, DEFAULT_TABBAR_HEIGHT } = calender;
@@ -21,15 +18,14 @@ const TabBar = ({
   descriptors,
   navigation,
   activeBackgroundColor,
-  activeTintColor,
+  activeTintColor: customActiveTintColor,
   inactiveBackgroundColor,
-  inactiveTintColor,
+  inactiveTintColor: customInactiveTintColor,
   labelStyle,
   showLabel,
   tabStyle,
 }) => {
   const activeIndex = useSharedValue(0);
-  // const transitionX = useSharedValue(0);
 
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
@@ -53,12 +49,20 @@ const TabBar = ({
     };
   });
 
+  const activeTintColor =
+    customActiveTintColor === undefined ? colors.pink : customActiveTintColor;
+
+  const inactiveTintColor =
+    customInactiveTintColor === undefined
+      ? colors.gray
+      : customInactiveTintColor;
+
   return (
     <View style={[styles.container]}>
       <Animated.View
         style={[{ position: "absolute", top: 0, left: 0 }, indicatorStyle]}
       >
-        {/* {routes.map((route, index) => {
+        {routes.map((route, index) => {
           const { options } = descriptors[route.key];
           return (
             <ActiveIcon
@@ -67,15 +71,8 @@ const TabBar = ({
               renderActiveIcon={options.activeIcon}
             />
           );
-        })} */}
+        })}
       </Animated.View>
-      <Particule
-        {...{
-          activeIndex,
-          indicatorPosition,
-          tabWidth,
-        }}
-      />
 
       {routes.map((route, index) => {
         const { options } = descriptors[route.key];
@@ -107,8 +104,6 @@ const TabBar = ({
           });
         };
 
-        const position = index * tabWidth + tabWidth / 2;
-
         return (
           <TabItem
             key={`bg-${index}`}
@@ -125,7 +120,6 @@ const TabBar = ({
               labelStyle,
               onPress,
               onLongPress,
-              position,
               route,
               showLabel,
               tabWidth,

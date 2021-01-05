@@ -1,28 +1,25 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, {
-  // useDerivedValue,
-  // withSpring,
   Easing,
-  Extrapolate,
-  interpolate,
   useAnimatedStyle,
   withDelay,
   withTiming,
 } from "react-native-reanimated";
 
-import { calender, colors } from "../config";
+import { calender } from "../config";
+import Weave from "./Weave";
 
 const { ICON_SIZE } = calender;
 
 const config = {
-  duration: 350,
+  duration: 450,
   easing: Easing.bezier(0.5, 0.01, 0, 1),
 };
 
 const TabItem = ({
-  activeTintColor: customActiveTintColor,
-  inactiveTintColor: customInactiveTintColor,
+  activeTintColor,
+  inactiveTintColor,
   activeBackgroundColor = "transparent",
   inactiveBackgroundColor = "transparent",
   activeIndex,
@@ -30,23 +27,13 @@ const TabItem = ({
   label,
   labelStyle,
   index,
-  indicatorPosition,
   onPress,
   onLongPress,
-  position,
   renderIcon,
   route,
   shoawLabel = true,
   tabWidth,
 }) => {
-  const activeTintColor =
-    customActiveTintColor === undefined ? colors.pink : customActiveTintColor;
-
-  const inactiveTintColor =
-    customInactiveTintColor === undefined
-      ? colors.gray
-      : customInactiveTintColor;
-
   const color = focused ? activeTintColor : inactiveTintColor;
 
   const backgroundColor = focused
@@ -54,21 +41,9 @@ const TabItem = ({
     : inactiveBackgroundColor;
 
   const staticIconStyle = useAnimatedStyle(() => {
-    const visibily = interpolate(
-      indicatorPosition.value,
-      [
-        position - tabWidth / 2,
-        position - tabWidth / 4,
-        position + tabWidth / 4,
-        position + tabWidth / 2,
-      ],
-      [1, 0.2, 0.2, 1],
-      Extrapolate.CLAMP
-    );
     const isActive = index === activeIndex.value;
     const offset = isActive ? 0 : 1;
     return {
-      opacity: visibily,
       transform: [
         {
           scale: withDelay(isActive ? 250 : 0, withTiming(offset, config)),
@@ -78,15 +53,16 @@ const TabItem = ({
   });
 
   return (
-    <Pressable
-      onPress={() => {
-        onPress();
-        activeIndex.value = index;
-      }}
-      {...{ onLongPress }}
-      style={[styles.container, { backgroundColor }]}
-    >
-      <View style={[styles.tab, { width: tabWidth }]}>
+    <View style={[styles.container, { width: tabWidth, backgroundColor }]}>
+      <Weave {...{ activeIndex, index, activeTintColor }} />
+      <Pressable
+        onPress={() => {
+          onPress();
+          activeIndex.value = index;
+        }}
+        {...{ onLongPress }}
+        style={styles.container}
+      >
         <Animated.View style={[styles.tab, staticIconStyle]}>
           {renderIcon({
             route,
@@ -94,14 +70,14 @@ const TabItem = ({
             color: inactiveTintColor,
           })}
         </Animated.View>
-      </View>
 
-      {shoawLabel && (
-        <Text numberOfLines={1} style={[styles.label, { color }, labelStyle]}>
-          {label}
-        </Text>
-      )}
-    </Pressable>
+        {shoawLabel && (
+          <Text numberOfLines={1} style={[styles.label, { color }, labelStyle]}>
+            {label}
+          </Text>
+        )}
+      </Pressable>
+    </View>
   );
 };
 
