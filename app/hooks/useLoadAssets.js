@@ -1,8 +1,6 @@
 import { Asset } from "expo-asset";
 import { useEffect, useState } from "react";
 
-import assets from "../config/assets";
-
 const cacheImages = (images) => {
   return images.map((image) => {
     if (typeof image === "string") {
@@ -17,7 +15,7 @@ const useLoadAssets = () => {
   const [assetsLoaded, setAssetsLoaded] = useState(false);
 
   const loadAssetsAsync = async () => {
-    const imageAssets = cacheImages(assets);
+    const imageAssets = cacheImages([]);
 
     await Promise.all([...imageAssets]);
     setAssetsLoaded(true);

@@ -4,27 +4,21 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { mix, useTiming } from "react-native-redash";
+import { mix } from "react-native-redash";
 
-import { calender } from "../config";
+import { ICON_SIZE, PADDING } from "./constants";
 
-const { ICON_SIZE, PADDING } = calender;
 const size = ICON_SIZE + PADDING * 2;
 
-const Weave = ({ activeIndex, index, activeTintColor }) => {
-  const activeTransition = useTiming(activeIndex.value === index, {
-    duration: 300,
-  });
-
+const Weave = ({ activeTransition, activeTintColor, isActive }) => {
   const stylez = useAnimatedStyle(() => {
-    const isActive = index === activeIndex.value;
-    const scale = mix(activeTransition.value, 0.4, 1.2);
+    const scale = mix(activeTransition.value, 0.4, 1);
     const borderWidth = mix(activeTransition.value, 5, 1);
 
     const opacity = interpolate(activeTransition.value, [0, 0.5, 1], [0, 1, 0]);
     return {
       transform: [{ scale }],
-      borderColor: isActive ? activeTintColor : "transparent",
+      borderColor: isActive.value ? activeTintColor : "transparent",
       borderWidth,
       opacity,
     };

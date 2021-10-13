@@ -11,15 +11,16 @@ import Message from "../assets/icons/message.svg";
 import MessageOutline from "../assets/icons/message-outline.svg";
 import Planet from "../assets/icons/planet.svg";
 import PlanetOutline from "../assets/icons/planet-outline.svg";
-import { Icon, TabBar } from "../components";
-import { colors } from "../config";
+import colors from "../colors";
+import TabBar from "../TabBar";
+import Icon from "./Icon";
 import {
   ListingEditScreen,
   ListingScreen,
   MessageScreen,
   PlanetScreen,
   ProfileScreen,
-} from "../screens";
+} from "./screens";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,8 +29,10 @@ const AppNavigator = () => (
     tabBar={(props) => <TabBar {...props} />}
     screenOptions={({ route }) => ({
       headerShown: false,
+      tabBarActiveTintColor: colors.pink,
+      tabBarInactiveTintColor: colors.gray,
       tabBarIcon: () => {
-        let DefaultIcon;
+        let DefaultIcon = "";
 
         switch (route.name) {
           case "Planet":
@@ -75,10 +78,6 @@ const AppNavigator = () => (
         return <Icon IconName={ActiveIcon} />;
       },
     })}
-    tabBarOptions={{
-      activeTintColor: colors.pink,
-      inactiveTintColor: colors.gray,
-    }}
   >
     <Tab.Screen
       name="Planet"

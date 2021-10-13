@@ -1,21 +1,13 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, {
-  Easing,
   useAnimatedStyle,
-  withDelay,
+  useDerivedValue,
   withTiming,
 } from "react-native-reanimated";
 
-import { calender } from "../config";
+import { ICON_SIZE, PADDING } from "./constants";
 import Weave from "./Weave";
-
-const { ICON_SIZE } = calender;
-
-const config = {
-  duration: 450,
-  easing: Easing.bezier(0.5, 0.01, 0, 1),
-};
 
 const TabItem = ({
   activeTintColor,
@@ -28,7 +20,7 @@ const TabItem = ({
   labelStyle,
   index,
   onPress,
-  onLongPress,
+  renderActiveIcon,
   renderIcon,
   route,
   shoawLabel = true,
@@ -40,13 +32,19 @@ const TabItem = ({
     ? activeBackgroundColor
     : inactiveBackgroundColor;
 
+  const isActive = useDerivedValue(() => {
+    return activeIndex.value === index;
+  });
+
+  const activeTransition = useDerivedValue(() => {
+    return withTiming(isActive.value, { duration: 450 });
+  });
+
   const staticIconStyle = useAnimatedStyle(() => {
-    const isActive = index === activeIndex.value;
-    const offset = isActive ? 0 : 1;
     return {
       transform: [
         {
-          scale: withDelay(isActive ? 250 : 0, withTiming(offset, config)),
+          scale: withTiming(isActive.value ? 1 : 0, { duration: 450 }),
         },
       ],
     };
@@ -54,21 +52,29 @@ const TabItem = ({
 
   return (
     <View style={[styles.container, { width: tabWidth, backgroundColor }]}>
-      <Weave {...{ activeIndex, index, activeTintColor }} />
+      <Weave {...{ activeTransition, activeTintColor, isActive }} />
       <Pressable
         onPress={() => {
           onPress();
           activeIndex.value = index;
         }}
-        {...{ onLongPress }}
-        style={styles.container}
+        style={styles.tab}
       >
-        <Animated.View style={[styles.tab, staticIconStyle]}>
-          {renderIcon({
-            route,
-            size: ICON_SIZE,
-            color: inactiveTintColor,
-          })}
+        <Animated.View style={[styles.tab]}>
+          <View style={StyleSheet.absoluteFill}>
+            {renderIcon({
+              route,
+              size: ICON_SIZE,
+              color: inactiveTintColor,
+            })}
+          </View>
+          <Animated.View style={[styles.icon, staticIconStyle]}>
+            {renderActiveIcon({
+              route,
+              size: ICON_SIZE,
+              color: activeTintColor,
+            })}
+          </Animated.View>
         </Animated.View>
 
         {shoawLabel && (
@@ -85,12 +91,16 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
+    height: ICON_SIZE + PADDING * 2,
   },
   tab: {
-    flex: 1,
-    justifyContent: "center",
     alignItems: "center",
-    paddingTop: 4,
+    justifyContent: "center",
+    width: ICON_SIZE,
+    height: ICON_SIZE,
+  },
+  icon: {
+    overflow: "hidden",
   },
   label: {
     fontSize: 10,

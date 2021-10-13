@@ -2,8 +2,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
 import React from "react";
 
+import AppNavigator from "./app/example/AppNavigator";
 import useLoadAssets from "./app/hooks/useLoadAssets";
-import AppNavigator from "./app/navigation/AppNavigator";
 
 const App = () => {
   const { assetsLoaded, setAssetsLoaded, loadAssetsAsync } = useLoadAssets();

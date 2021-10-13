@@ -8,14 +8,13 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { calender } from "../config";
+import { ICON_SIZE, PADDING } from "./constants";
 
 const config = {
   duration: 350,
   easing: Easing.bezier(0.5, 0.01, 0, 1),
 };
 
-const { ICON_SIZE, PADDING } = calender;
 const size = ICON_SIZE + PADDING;
 
 const ActiveIcon = ({
