@@ -34,7 +34,7 @@ const TabBar = ({ state, descriptors, navigation, ...rest }) => {
       <View style={[styles.tabs, tabBarStyle]}>
         {routes.map((route, index) => {
           const { options } = descriptors[route.key];
-          const position = tabWidth * index + tabWidth / 2;
+
           const label =
             options.tabBarLabel !== undefined
               ? options.tabBarLabel
@@ -65,18 +65,17 @@ const TabBar = ({ state, descriptors, navigation, ...rest }) => {
               inactiveBackgroundColor={tabBarInactiveBackgroundColor}
               labelStyle={tabBarLabelStyle}
               showLabel={tabBarShowLabel}
+              renderActiveIcon={options.activeIcon}
+              renderIcon={options.tabBarIcon}
               {...{
                 activeIndex,
                 focused,
                 index,
-                label,
                 onPress,
-                position,
+                label,
                 route,
                 tabWidth,
               }}
-              renderActiveIcon={options.activeIcon}
-              renderIcon={options.tabBarIcon}
               {...rest}
             />
           );
@@ -95,8 +94,6 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     flexDirection: "row",
     alignItems: "center",
-    // height: DEFAULT_TABBAR_HEIGHT,
-    // height: ICON_SIZE + PADDING * 2,
   },
 });
 

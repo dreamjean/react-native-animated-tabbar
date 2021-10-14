@@ -6,7 +6,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { ICON_SIZE, PADDING } from "./constants";
+import { DEFAULT_TABBAR_HEIGHT, DURATION, ICON_SIZE } from "./constants";
 import Weave from "./Weave";
 
 const TabItem = ({
@@ -44,7 +44,7 @@ const TabItem = ({
     return {
       transform: [
         {
-          scale: withTiming(isActive.value ? 1 : 0, { duration: 450 }),
+          scale: withTiming(isActive.value, { duration: DURATION }),
         },
       ],
     };
@@ -52,7 +52,7 @@ const TabItem = ({
 
   return (
     <View style={[styles.container, { width: tabWidth, backgroundColor }]}>
-      <Weave {...{ activeTransition, activeTintColor, isActive }} />
+      <Weave {...{ activeTintColor, activeTransition, isActive }} />
       <Pressable
         onPress={() => {
           onPress();
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    height: ICON_SIZE + PADDING * 2,
+    height: DEFAULT_TABBAR_HEIGHT,
   },
   tab: {
     alignItems: "center",

@@ -6,11 +6,9 @@ import Animated, {
 } from "react-native-reanimated";
 import { mix } from "react-native-redash";
 
-import { ICON_SIZE, PADDING } from "./constants";
+import { DEFAULT_TABBAR_HEIGHT } from "./constants";
 
-const size = ICON_SIZE + PADDING * 2;
-
-const Weave = ({ activeTransition, activeTintColor, isActive }) => {
+const Weave = ({ activeTintColor, activeTransition, isActive }) => {
   const stylez = useAnimatedStyle(() => {
     const scale = mix(activeTransition.value, 0.4, 1);
     const borderWidth = mix(activeTransition.value, 5, 1);
@@ -39,9 +37,9 @@ const styles = StyleSheet.create({
     zIndex: 5,
   },
   weave: {
-    width: size,
-    height: size,
-    borderRadius: size / 2,
+    width: DEFAULT_TABBAR_HEIGHT,
+    height: DEFAULT_TABBAR_HEIGHT,
+    borderRadius: DEFAULT_TABBAR_HEIGHT / 2,
   },
 });
 
