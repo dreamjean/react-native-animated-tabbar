@@ -1,13 +1,23 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-import { useSharedValue } from "react-native-reanimated";
+import {
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 import colors from "./colors";
 import { width } from "./constants";
+import Particlues from "./Particules";
 import TabItem from "./TabItem";
 
-const TabBar = ({ state, descriptors, navigation, ...rest }) => {
+const TabBar = ({ state, descriptors, navigation }) => {
   const activeIndex = useSharedValue(0);
+  const topY = useSharedValue(0);
+  const bottomY = useSharedValue(0);
+  const transition = useDerivedValue(() => {
+    return withTiming(activeIndex.value, { duration: 450 });
+  });
 
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
@@ -69,17 +79,23 @@ const TabBar = ({ state, descriptors, navigation, ...rest }) => {
               renderIcon={options.tabBarIcon}
               {...{
                 activeIndex,
+                bottomY,
                 focused,
                 index,
                 onPress,
                 label,
                 route,
                 tabWidth,
+                topY,
+                transition,
               }}
-              {...rest}
             />
           );
         })}
+        <Particlues
+          {...{ transition, topY, bottomY, tabWidth }}
+          activeTintColor={tabBarActiveTintColor}
+        />
       </View>
     </SafeAreaView>
   );

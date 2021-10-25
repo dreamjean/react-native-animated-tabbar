@@ -50,6 +50,9 @@ const AppNavigator = () => (
           case "Profile":
             DefaultIcon = HeartOutline;
             break;
+
+          default:
+            DefaultIcon = PlanetOutline;
         }
 
         return <Icon IconName={DefaultIcon} />;
@@ -73,6 +76,9 @@ const AppNavigator = () => (
           case "Profile":
             ActiveIcon = Heart;
             break;
+
+          default:
+            ActiveIcon = Planet;
         }
 
         return <Icon IconName={ActiveIcon} />;

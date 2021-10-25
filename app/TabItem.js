@@ -3,11 +3,15 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useDerivedValue,
+  withSequence,
   withTiming,
 } from "react-native-reanimated";
 
 import { DEFAULT_TABBAR_HEIGHT, DURATION, ICON_SIZE } from "./constants";
 import Weave from "./Weave";
+
+const config1 = { duration: DURATION };
+const config2 = { duration: DURATION / 2 };
 
 const TabItem = ({
   activeTintColor,
@@ -15,6 +19,7 @@ const TabItem = ({
   activeBackgroundColor = "transparent",
   inactiveBackgroundColor = "transparent",
   activeIndex,
+  bottomY,
   focused,
   label,
   labelStyle,
@@ -25,6 +30,7 @@ const TabItem = ({
   route,
   shoawLabel = true,
   tabWidth,
+  topY,
 }) => {
   const color = focused ? activeTintColor : inactiveTintColor;
 
@@ -37,16 +43,12 @@ const TabItem = ({
   });
 
   const activeTransition = useDerivedValue(() => {
-    return withTiming(isActive.value, { duration: 450 });
+    return withTiming(isActive.value, config1);
   });
 
   const staticIconStyle = useAnimatedStyle(() => {
     return {
-      transform: [
-        {
-          scale: withTiming(isActive.value, { duration: DURATION }),
-        },
-      ],
+      transform: [{ scale: withTiming(isActive.value ? 1.2 : 0, config1) }],
     };
   });
 
@@ -56,11 +58,22 @@ const TabItem = ({
       <Pressable
         onPress={() => {
           onPress();
+
+          topY.value = withSequence(
+            withTiming(-20, config2),
+            withTiming(0, config2)
+          );
+
+          bottomY.value = withSequence(
+            withTiming(30, config2),
+            withTiming(0, config2)
+          );
+
           activeIndex.value = index;
         }}
         style={styles.tab}
       >
-        <Animated.View style={[styles.tab]}>
+        <View style={styles.tab}>
           <View style={StyleSheet.absoluteFill}>
             {renderIcon({
               route,
@@ -75,7 +88,7 @@ const TabItem = ({
               color: activeTintColor,
             })}
           </Animated.View>
-        </Animated.View>
+        </View>
 
         {shoawLabel && (
           <Text numberOfLines={1} style={[styles.label, { color }, labelStyle]}>
@@ -104,7 +117,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 10,
-    marginTop: 3,
+    marginTop: 4,
     marginBottom: 3,
   },
 });
