@@ -19,11 +19,14 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./app/assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
     "web": {
       "favicon": "./app/assets/favicon.png"
-    },
-    "experiments": {
-      "turboModules": true
     },
     "packagerOpts": {
       "config": "metro.config.js",
@@ -40,6 +43,8 @@
         "wasm",
         "svg"
       ]
-    }
+    },
+    "description": "animated tabbar",
+    "githubUrl": "https://github.com/dreamjean/react-native-animated-tabbar"
   }
 }

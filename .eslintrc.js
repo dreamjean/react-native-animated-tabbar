@@ -7,7 +7,7 @@ module.exports = {
       jsx: true,
     },
   },
-  parser: "babel-eslint",
+  parser: "@babel/eslint-parser",
   settings: {
     react: {
       version: "detect", // Automatically detect the react version
