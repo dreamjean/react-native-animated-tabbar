@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React from "react";
 
 import Birds from "../assets/icons/birds.svg";
 import BirdsOutline from "../assets/icons/birds-outline.svg";

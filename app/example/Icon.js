@@ -1,5 +1,3 @@
-import React from "react";
-
 import { ICON_SIZE } from "../constants";
 
 const Icon = ({ IconName }) => {
