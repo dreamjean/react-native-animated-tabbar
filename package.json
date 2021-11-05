@@ -16,8 +16,9 @@
     }
   },
   "lint-staged": {
-    "./**/*.{js,jsx}": [
-      "eslint --fix"
+    "app/**/*.{js,jsx,ts,tsx,md,html,css}": [
+      "prettier --write",
+      "eslint --cache --fix"
     ]
   },
   "dependencies": {
@@ -47,7 +48,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "husky": "4.3.6",
+    "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",
     "react-native-svg-transformer": "^0.14.3"
